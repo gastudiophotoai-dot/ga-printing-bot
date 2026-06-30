@@ -1,9 +1,9 @@
+import os
 from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
-TOKEN = "PUT_YOUR_BOT_TOKEN_HERE"
+TOKEN = os.getenv("TOKEN")
 
-# Main menu buttons
 menu = [
     ["📸 Photo Editing", "🪪 ID Photo"],
     ["🎓 Graduation Design", "🖨 Printing"],
@@ -14,35 +14,35 @@ keyboard = ReplyKeyboardMarkup(menu, resize_keyboard=True)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "Welcome to GA Printing & Digital Studio 🇪🇹\nPlease choose a service:",
+        "Welcome to GA Printing & Digital Studio 🇪🇹\nChoose service:",
         reply_markup=keyboard
     )
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
 
     if text == "📸 Photo Editing":
-        await update.message.reply_text("Send your photo for editing 📸")
+        await update.message.reply_text("Send photo 📸")
     elif text == "🪪 ID Photo":
-        await update.message.reply_text("Send your ID photo request 🪪")
+        await update.message.reply_text("Send ID request 🪪")
     elif text == "🎓 Graduation Design":
-        await update.message.reply_text("Send details for graduation design 🎓")
+        await update.message.reply_text("Send details 🎓")
     elif text == "🖨 Printing":
-        await update.message.reply_text("Send your printing file 🖨")
+        await update.message.reply_text("Send file 🖨")
     elif text == "📦 Order Status":
-        await update.message.reply_text("Enter your order ID 📦")
+        await update.message.reply_text("Enter order ID 📦")
     elif text == "📞 Contact Us":
         await update.message.reply_text(
-            "GA Printing & Digital Studio\n📍 Konso - Karat\n📞 +251912702062 / +251916357344 / +251970057813"
+            "GA Printing Studio\n📍 Konso-Karat\n📞 +251912702062 / +251916357344 / +251970057813"
         )
     else:
-        await update.message.reply_text("Please choose from menu.")
+        await update.message.reply_text("Choose from menu.")
 
 def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
 
     app.run_polling()
 
