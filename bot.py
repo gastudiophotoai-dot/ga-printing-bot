@@ -1,49 +1,15 @@
 import os
-from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 TOKEN = os.getenv("TOKEN")
 
-menu = [
-    ["📸 Photo Editing", "🪪 ID Photo"],
-    ["🎓 Graduation Design", "🖨 Printing"],
-    ["📦 Order Status", "📞 Contact Us"],
-]
-
-keyboard = ReplyKeyboardMarkup(menu, resize_keyboard=True)
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Welcome to GA Printing & Digital Studio 🇪🇹\nChoose service:",
-        reply_markup=keyboard
-    )
-
-async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-
-    if text == "📸 Photo Editing":
-        await update.message.reply_text("Send photo 📸")
-    elif text == "🪪 ID Photo":
-        await update.message.reply_text("Send ID request 🪪")
-    elif text == "🎓 Graduation Design":
-        await update.message.reply_text("Send details 🎓")
-    elif text == "🖨 Printing":
-        await update.message.reply_text("Send file 🖨")
-    elif text == "📦 Order Status":
-        await update.message.reply_text("Enter order ID 📦")
-    elif text == "📞 Contact Us":
-        await update.message.reply_text(
-            "GA Printing Studio\n📍 Konso-Karat\n📞 +251912702062 / +251916357344 / +251970057813"
-        )
-    else:
-        await update.message.reply_text("Choose from menu.")
+    await update.message.reply_text("GA Printing Bot is working 🚀")
 
 def main():
     app = Application.builder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
-
     app.run_polling()
 
 if __name__ == "__main__":
